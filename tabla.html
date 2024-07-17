@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos desde Excel</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos desde Excel</h1>
+    <table id="datos-table">
+        <thead>
+            <tr>
+                <!-- Aquí irán los encabezados de las columnas -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí irán los datos -->
+        </tbody>
+    </table>
+
+    <script>
+        fetch('/datos')
+            .then(response => response.json())
+            .then(data => {
+                const tableHead = document.querySelector('#datos-table thead tr');
+                const tableBody = document.querySelector('#datos-table tbody');
+
+                // Añadir encabezados
+                const headers = Object.keys(data[0]);
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    tableHead.appendChild(th);
+                });
+
+                // Añadir filas de datos
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    headers.forEach(header => {
+                        const td = document.createElement('td');
+                        td.textContent = row[header];
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            });
+    </script>
+</body>
+</html>
